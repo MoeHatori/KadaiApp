@@ -1,5 +1,6 @@
 package jp.techacademy.moe.hatori.kadaiapp
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.TypedArrayUtils.getString
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 
@@ -36,8 +38,9 @@ class ApiAdapter(private val context: Context): RecyclerView.Adapter<RecyclerVie
     class ApiItemViewHolder(view: View): RecyclerView.ViewHolder(view) {
         val rootView : ConstraintLayout = view.findViewById(R.id.rootView)
         val timeTextView: TextView = view.findViewById(R.id.timeTextView)
-        val favoriteImageView: ImageView = view.findViewById(R.id.favoriteImageView)
         val priceTextView: TextView = view.findViewById(R.id.priceTextView)
+        val routeTextView: TextView = view.findViewById(R.id.routeTextView)
+        val otherTextView: TextView = view.findViewById(R.id.otherTextView)
 
     }
 
@@ -53,6 +56,7 @@ class ApiAdapter(private val context: Context): RecyclerView.Adapter<RecyclerVie
         }
     }
 
+    @SuppressLint("RestrictedApi")
     private fun updateApiItemViewHolder(holder: ApiItemViewHolder, position: Int) {
         // 生成されたViewHolderの位置を指定し、オブジェクトを代入
         val data = items[position]
@@ -63,15 +67,23 @@ class ApiAdapter(private val context: Context): RecyclerView.Adapter<RecyclerVie
                     if (position % 2 == 0) android.R.color.white else android.R.color.darker_gray))
             }
 
-            var arrivaltime: String = data.route.line[0].arrivalState.datetime.text.drop(11).dropLast(9)
-            var departuretime: String = data.route.line[data.route.line.size-1].arrivalState.datetime.text.drop(11).dropLast(9)
-            var totaltime:Int = data.route.timeOnBoard.toInt() + data.route.timeOther.toInt() + data.route.timeWalk.toInt()
+            var result_arrivaltime: String = data.route.line[0].arrivalState.datetime.text.drop(11).dropLast(9)
+            var result_departuretime: String = data.route.line[data.route.line.size-1].arrivalState.datetime.text.drop(11).dropLast(9)
+            var result_totaltime:Int = data.route.timeOnBoard.toInt() + data.route.timeOther.toInt() + data.route.timeWalk.toInt()
 
-            timeTextView.text = arrivaltime + "　→　" + departuretime + "     " + totaltime.toString()+"分"
+            timeTextView.text = result_arrivaltime + "　→　" + result_departuretime + "     " + result_totaltime.toString()+"分"
 
             priceTextView.text = "片道："+data.price[0].oneway+"　　乗換数："+data.route.line.count()+"回"
 
-            favoriteImageView.setImageResource(R.drawable.ic_train)
+            val result_route = StringBuilder()
+            for (i in data.route.point.indices){
+                if (i != 0 && i != data.route.point.size-1){
+                    result_route.append(" " + data.route.point[i].station.name+" →")
+                }
+            }
+
+            routeTextView.text = "発 →" + result_route + " 着"
+            otherTextView.text = "coming soon..."
         }
     }
 }

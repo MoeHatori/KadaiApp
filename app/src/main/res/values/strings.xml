@@ -10,4 +10,7 @@
     <string name="base_url">https://api.apigw.smt.docomo.ne.jp/ekispertCorp/v1/searchCourseExtreme</string>
     <string name="api_key">68736d5164763341437a41557774586f77663557426941395551703273484a2e39697a4c4b5a30676a6631</string>
     <string name="api_keyword">ランチ</string>
+
+    <string name="result_time">%s  →→　%s  &lt;font color=\"red\"&gt;%s&lt;/font&gt;</string>
+
 </resources>
