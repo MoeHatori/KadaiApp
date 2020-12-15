@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">KadaiApp</string>
+    <!-- TabLayoutのタイトル -->
+    <string name="tab_title_api">検索結果</string>
+    <string name="tab_title_favorite">お気に入り</string>
+
+    <!-- API通信i関連 -->
+    <!--- https://api.apigw.smt.docomo.ne.jp/ekispertCorp/v1/searchCourseExtreme?
+       APIKEY=68736d5164763341437a41557774586f77663557426941395551703273484a2e39697a4c4b5a30676a6631&viaList=立川:片倉-->
+    <string name="base_url">https://api.apigw.smt.docomo.ne.jp/ekispertCorp/v1/searchCourseExtreme</string>
+    <string name="api_key">68736d5164763341437a41557774586f77663557426941395551703273484a2e39697a4c4b5a30676a6631</string>
+    <string name="api_keyword">ランチ</string>
+</resources>
