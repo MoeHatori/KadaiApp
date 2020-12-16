@@ -15,12 +15,17 @@ import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import java.io.IOException
 
+
 class ApiFragment : Fragment() {
 
     private val apiAdapter by lazy { ApiAdapter(requireContext()) }
     private val handler = Handler(Looper.getMainLooper())
 
     var callback: FragmentCallback? = null// -> mainactivity
+
+    val departure_station = arguments?.getString("DEPARTURE")
+    val arrival_station = arguments?.getString("ARRIVAL")
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,6 +51,8 @@ class ApiFragment : Fragment() {
     }
 
     private fun updateData() {
+
+        Log.d("Test",departure_station)
         val url = StringBuilder()
             .append(getString(R.string.base_url))
             .append("?APIKEY=").append(getString(R.string.api_key)) // Apiを使うためのAPIKEY

@@ -27,8 +27,20 @@ class MainActivity : AppCompatActivity(),FragmentCallback {
             tab.setText(viewPagerAdapter.titleIds[position])
         }.attach()
 
-        //★titleTextViewに出発地→到着地を表示したい
-        //★dateTextViewに日付と出発時刻を表示する
+        //検索ページで検索された駅名を表示
+        val departure_station = intent.getStringExtra("DEPARTURE_STATION")
+        val arrival_station = intent.getStringExtra("ARRIVAL_STATION")
+
+        titleTextView.text = departure_station +" 　→　　" + arrival_station
+
+        //ApiFragmentへの値の受け渡し
+        val bundle = Bundle()
+        bundle.putString("DEPARTURE",departure_station.toString())
+        bundle.putString("ARRIVAL",arrival_station.toString())
+
+        val fragment = ApiFragment()
+        fragment.arguments = bundle
+
 
     }
 
