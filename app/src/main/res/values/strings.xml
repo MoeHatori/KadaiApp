@@ -2,7 +2,7 @@
     <string name="app_name">KadaiApp</string>
     <!-- TabLayoutのタイトル -->
     <string name="tab_title_api">検索結果</string>
-    <string name="tab_title_favorite">お気に入り</string>
+    <string name="tab_title_favorite">:)</string>
 
     <!-- API通信i関連 -->
     <!--- https://api.apigw.smt.docomo.ne.jp/ekispertCorp/v1/searchCourseExtreme?
@@ -12,5 +12,10 @@
     <string name="api_keyword">ランチ</string>
 
     <string name="result_time">%s  →→　%s  &lt;font color=\"red\"&gt;%s&lt;/font&gt;</string>
+
+    <!-- 検索画面 -->
+    <string name="departure_title">出発</string>
+    <string name="arrival_title">到着</string>
+    <string name="search_title">検索</string>
 
 </resources>

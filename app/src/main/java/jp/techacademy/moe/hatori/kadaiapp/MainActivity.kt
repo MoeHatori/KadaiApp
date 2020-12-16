@@ -6,7 +6,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(),FragmentCallback {
 
     private val viewPagerAdapter by lazy { ViewPagerAdapter(this) }
 
@@ -21,11 +21,21 @@ class MainActivity : AppCompatActivity() {
             offscreenPageLimit = viewPagerAdapter.itemCount // ViewPager2で保持する画面数
         }
 
-        // TabLayoutの初期化
-        // TabLayoutとViewPager2を紐づける
+        // TabLayoutの初期化,TabLayoutとViewPager2を紐づける
         // TabLayoutのTextを指定する
         TabLayoutMediator(tabLayout, viewPager2) { tab, position ->
             tab.setText(viewPagerAdapter.titleIds[position])
         }.attach()
+
+        //★titleTextViewに出発地→到着地を表示したい
+        //★dateTextViewに日付と出発時刻を表示する
+
     }
+
+    override fun onApiResponse(course: List<Course>) {
+
+        //★ApiFragmentから値を持ってきて処理できるようにしようと思ったけどやめた
+
+    }
+
 }

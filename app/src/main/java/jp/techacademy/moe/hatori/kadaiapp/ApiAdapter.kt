@@ -14,6 +14,12 @@ import androidx.core.content.res.TypedArrayUtils.getString
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 
+//android no liblrary
+//viewModel   MVVM
+//dataBinging liveData
+
+// other
+//rxJava
 class ApiAdapter(private val context: Context): RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     // 取得したJsonデータを解析し、Course型オブジェクトとして生成したものを格納するリスト
@@ -37,6 +43,7 @@ class ApiAdapter(private val context: Context): RecyclerView.Adapter<RecyclerVie
     // ViewHolderを継承したApiItemViewHolderクラスの定義
     class ApiItemViewHolder(view: View): RecyclerView.ViewHolder(view) {
         val rootView : ConstraintLayout = view.findViewById(R.id.rootView)
+        val numberTextView: TextView = view.findViewById(R.id.numberTextView)
         val timeTextView: TextView = view.findViewById(R.id.timeTextView)
         val priceTextView: TextView = view.findViewById(R.id.priceTextView)
         val routeTextView: TextView = view.findViewById(R.id.routeTextView)
@@ -66,6 +73,9 @@ class ApiAdapter(private val context: Context): RecyclerView.Adapter<RecyclerVie
                 setBackgroundColor(ContextCompat.getColor(context,
                     if (position % 2 == 0) android.R.color.white else android.R.color.darker_gray))
             }
+
+            var result_number = position + 1
+            numberTextView.text = result_number.toString()
 
             var result_arrivaltime: String = data.route.line[0].arrivalState.datetime.text.drop(11).dropLast(9)
             var result_departuretime: String = data.route.line[data.route.line.size-1].arrivalState.datetime.text.drop(11).dropLast(9)
