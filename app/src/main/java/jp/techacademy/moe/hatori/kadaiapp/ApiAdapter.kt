@@ -93,7 +93,7 @@ class ApiAdapter(private val context: Context): RecyclerView.Adapter<RecyclerVie
             }
 
             routeTextView.text = "発 →" + result_route + " 着"
-            otherTextView.text = "coming soon..."
+            otherTextView.text = "COMING SOON..."
         }
     }
 }

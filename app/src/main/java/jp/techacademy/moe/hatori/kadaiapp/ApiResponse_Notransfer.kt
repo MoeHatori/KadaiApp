@@ -3,42 +3,33 @@ import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 
-data class ApiResponse(
+data class ApiResponse_Notransfer(
     @SerializedName("ResultSet")
-    val resultSet: ResultSet
+    val resultSet: ResultSet_single
 )
 
-data class ResultSet(
+data class ResultSet_single(
     @SerializedName("Course")
-    val course: List<Course>
-): Serializable
+    val course: List<Course_single>
+)
 
-data class Course(
+data class Course_single(
     @SerializedName("Price")
-    val price: List<Price>,
+    val price: List<Price_single>,
     @SerializedName("Route")
-    val route: Route
-): Serializable
+    val route: Route_single
+)
 
-data class Price(
+data class Price_single(
     @SerializedName("kind")
     val kind: String,
     @SerializedName("Oneway")
     val oneway: String
-): Serializable
+)
 
-
-//class MultipleType<T> {
-//    var value: T? = null
-//    var values: List<T>? = null
-//
-//    val isMultiple: Boolean
-//        get() = values != null
-//}
-
-data class Route(
+data class Route_single(
     @SerializedName("Line")
-    val line: List<Line>,
+    val line: Line,
     @SerializedName("Point")
     val point: List<Point>,
     @SerializedName("timeOnBoard")
@@ -49,49 +40,45 @@ data class Route(
     val timeWalk: String,
     @SerializedName("transferCount")
     val transferCount: String
-): Serializable
+)
 
 
-data class Line(
+data class Line_single(
     @SerializedName("ArrivalState")
-    val arrivalState: ArrivalState,
+    val arrivalState: ArrivalState_single,
     @SerializedName("DepartureState")
-    val departureState: DepartureState,
+    val departureState: DepartureState_single,
     @SerializedName("Name")
     val name: String,
     @SerializedName("timeOnBoard")
     val timeOnBoard: String,
     @SerializedName("Type")
-    val type: Any
-): Serializable
+    val type: String
+)
 
-data class Point(
+data class Point_single(
     @SerializedName("Station")
-    val station: Station
-): Serializable
+    val station: Station_single
+)
 
-data class ArrivalState(
+data class ArrivalState_single(
     @SerializedName("Datetime")
-    val datetime: Datetime
-): Serializable
+    val datetime: Datetime_single,
+)
 
-data class DepartureState(
+data class DepartureState_single(
     @SerializedName("Datetime")
-    val datetime: DatetimeX
-): Serializable
+    val datetime: DatetimeX,
+)
 
 
-data class Datetime(
+data class Datetime_single(
     @SerializedName("text")
     val text: String
-): Serializable
+)
 
-data class DatetimeX(
-    @SerializedName("text")
-    val text: String
-): Serializable
-
-data class Station(
+data class Station_single(
     @SerializedName("Name")
-    val name: String
-): Serializable
+    val name: String,
+
+    )

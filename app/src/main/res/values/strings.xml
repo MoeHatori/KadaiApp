@@ -2,7 +2,7 @@
     <string name="app_name">KadaiApp</string>
     <!-- TabLayoutのタイトル -->
     <string name="tab_title_api">検索結果</string>
-    <string name="tab_title_favorite">:)</string>
+    <string name="tab_title_favorite">coming soon...</string>
 
     <!-- API通信i関連 -->
     <!--- https://api.apigw.smt.docomo.ne.jp/ekispertCorp/v1/searchCourseExtreme?
