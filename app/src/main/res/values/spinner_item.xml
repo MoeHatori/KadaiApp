@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="searchType_item">
+        <item>現在時刻</item>
+        <item>出発</item>
+        <item>到着</item>
+        <item>始発</item>
+        <item>終電</item>
+    </string-array>
+</resources>

@@ -33,16 +33,25 @@ class MainActivity : AppCompatActivity(),FragmentCallback {
             tab.setText(viewPagerAdapter.titleIds[position])
         }.attach()
 
-        //検索ページで検索された駅名を表示
-        val departure_station = intent.getStringExtra("DEPARTURE_STATION")
-        val arrival_station = intent.getStringExtra("ARRIVAL_STATION")
+        //searchActivityで設定された値を受け取る
+        val search_departure = intent.getStringExtra("SEARCH_DEPARTURE")
+        val search_arrival = intent.getStringExtra("SEARCH_ARRIVAL")
+        val search_time = intent.getStringExtra("SEARCH_TIME")
+        val search_date = intent.getStringExtra("SEARCH_DATE")
+        val search_type = intent.getStringExtra("SEARCH_TYPE")
 
-        titleTextView.text = departure_station +" 　→　　" + arrival_station
+        //検索ページで検索された駅名を表示
+        titleTextView.text = search_departure +" 　→　　" + search_arrival
+        dateTextView.text = search_date.substring(0,4)+"年"+search_date.substring(4,6)+"月"+search_date.substring(6,8)+"日    "+search_time.substring(0,2)+"時"+search_time.substring(2,4)+"分"
 
         //ApiFragmentへの値の受け渡し
         val bundle = Bundle()
-        bundle.putString("DEPARTURE",departure_station.toString())
-        bundle.putString("ARRIVAL",arrival_station.toString())
+        bundle.putString("DEPARTURE",search_departure.toString())
+        bundle.putString("ARRIVAL",search_arrival.toString())
+        bundle.putString("TIME",search_time.toString())
+        bundle.putString("DATE",search_date.toString())
+        bundle.putString("TYPE",search_type.toString())
+
 
         val fragment = fragments[0]
         fragment.arguments = bundle

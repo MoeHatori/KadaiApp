@@ -1,5 +1,8 @@
 package jp.techacademy.moe.hatori.kadaiapp
 
+//import androidx.test.espresso.core.internal.deps.guava.collect.Lists
+
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -26,8 +29,13 @@ class ApiFragment : Fragment() {
 
     var callback: FragmentCallback? = null// -> mainactivity
 
-    var departure_station: String = ""
-    var arrival_station: String = ""
+    var api_departure: String = ""
+    var api_arrival: String = ""
+    var api_time: String = ""
+    var api_date: String = ""
+    var api_type: String = ""
+
+    var url:String = ""
 
 
     override fun onCreateView(
@@ -38,17 +46,28 @@ class ApiFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_api, container, false)
         // fragment_api.xmlが反映されたViewを作成して、returnします
 
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // ここから初期化処理を行う
-        // RecyclerViewの初期化
 
-        departure_station = arguments?.getString("DEPARTURE").toString()
-        arrival_station = arguments?.getString("ARRIVAL").toString()
-        Log.d("Test_station", departure_station)
+        api_departure = arguments?.getString("DEPARTURE").toString()
+        api_arrival = arguments?.getString("ARRIVAL").toString()
+        api_time = arguments?.getString("TIME").toString()
+        api_date = arguments?.getString("DATE").toString()
+        api_type = arguments?.getString("TYPE").toString()
+
+        Log.d("Log_Api", "/"+api_date+"/"+api_time+"/"+api_type)
+
+
+        url = StringBuilder()
+            .append(getString(R.string.base_url))
+            .append("?APIKEY=").append(getString(R.string.api_key))
+            .append("&viaList=").append(api_departure).append(":").append(api_arrival)
+            .append("&time=").append(api_time)
+            .append("&date=").append(api_date)
+            .toString()
+        Log.d("Log_URL",url)
 
         recyclerView.apply {
             adapter = apiAdapter
@@ -62,12 +81,11 @@ class ApiFragment : Fragment() {
 
     private fun updateData() {
 
-
-        val url = StringBuilder()
-            .append(getString(R.string.base_url))
-            .append("?APIKEY=").append(getString(R.string.api_key)) // Apiを使うためのAPIKEY
-            .append("&viaList=").append(departure_station).append(":").append(arrival_station)
-            .toString()
+//        val url = StringBuilder()
+//            .append(getString(R.string.base_url))
+//            .append("?APIKEY=").append(getString(R.string.api_key)) // Apiを使うためのAPIKEY
+//            .append("&viaList=").append(api_departure).append(":").append(api_arrival)
+//            .toString()
         val client = OkHttpClient.Builder()
             .addInterceptor(HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.BODY
@@ -87,32 +105,20 @@ class ApiFragment : Fragment() {
             override fun onResponse(call: Call, response: Response) { // 成功時の処理
                 var list = listOf<Course>()
                 response.body?.string()?.also {
+
                     val gsonBuilder = GsonBuilder()
+                    val type: Type = object: TypeToken<MutableList<Line>>() {}.type
                     gsonBuilder.registerTypeAdapter(
-                        object :
-                            TypeToken<List<Line>>() {}.type,
+                        type,
                         LineTypeAdapter()
                     )
-                    val apiResponse = gsonBuilder.create().fromJson(it, ApiResponse::class.java)
+
+
+                    val apiResponse = gsonBuilder.create().fromJson(
+                        it,
+                        ApiResponse::class.java
+                    )
                     list = apiResponse.resultSet.course
-//                    try {
-//                        val apiResponse = Gson().fromJson(it, ApiResponse::class.java)
-//                        list = apiResponse.resultSet.course
-//                    } catch (e: Exception) {
-//                        val apiResponse_single = Gson().fromJson(
-//                            it,
-//                            ApiResponse_Notransfer::class.java
-//                        )
-//                        list_single = apiResponse_single.resultSet.course
-//
-//                        for (i in list_single.indices) {
-//                            //list[i].price = list_single[i].price
-//                        }
-//
-//
-//                    } finally {
-//                        Log.d("Test_Json", list[1].toString())
-//                    }
 
 
                 }
@@ -136,6 +142,35 @@ class ApiFragment : Fragment() {
         private const val COUNT = 20 // 1回のAPIで取得する件数
     }
 }
+
+class LineTypeAdapter : JsonDeserializer<List<Line>> { @Throws(JsonParseException::class)
+
+ override fun deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): List<Line> {
+
+    val list: MutableList<Line> = ArrayList()
+
+    // JSONが配列の場合の処理
+    if (json.isJsonArray) {
+        for (e in json.asJsonArray) {
+            list.add(
+                context.deserialize<Any>(
+                    e,
+                    Line::class.java
+                ) as Line
+            )
+        }
+    } else if (json.isJsonObject) {
+        list.add(
+            context.deserialize<Any>(
+                json,
+                Line::class.java
+            ) as Line
+        )
+    }
+    return list
+ }
+}
+
 
 //class MultipleTypeAdapter : JsonDeserializer<MultipleType<*>?>,
 //    JsonSerializer<MultipleType<*>?> {
@@ -181,35 +216,23 @@ class ApiFragment : Fragment() {
 //}
 
 
-class LineTypeAdapter :
-    JsonDeserializer<List<Line>> {
-    @Throws(JsonParseException::class)
-    override fun deserialize(
-        json: JsonElement,
-        typeOfT: Type,
-        context: JsonDeserializationContext
-    ): List<Line> {
-        val list: MutableList<Line> =
-            ArrayList()
+//                    try {
+//                        val apiResponse = Gson().fromJson(it, ApiResponse::class.java)
+//                        list = apiResponse.resultSet.course
+//                    } catch (e: Exception) {
+//                        val apiResponse_single = Gson().fromJson(
+//                            it,
+//                            ApiResponse_Notransfer::class.java
+//                        )
+//                        list_single = apiResponse_single.resultSet.course
+//
+//                        for (i in list_single.indices) {
+//                            //list[i].price = list_single[i].price
+//                        }
+//
+//
+//                    } finally {
+//                        Log.d("Test_Json", list[1].toString())
+//                    }
 
-        // JSONが配列の場合の処理
-        if (json.isJsonArray) {
-            for (e in json.asJsonArray) {
-                list.add(
-                    context.deserialize<Any>(
-                        e,
-                        Line::class.java
-                    ) as Line
-                )
-            }
-        } else if (json.isJsonObject) {
-            list.add(
-                context.deserialize<Any>(
-                    json,
-                    Line::class.java
-                ) as Line
-            )
-        }
-        return list
-    }
-}
+
