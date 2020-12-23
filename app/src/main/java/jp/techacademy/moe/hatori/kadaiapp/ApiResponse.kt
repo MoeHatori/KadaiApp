@@ -10,7 +10,7 @@ data class ApiResponse(
 
 data class ResultSet(
     @SerializedName("Course")
-    val course: List<Course>
+    val course: List<Course>?
 ): Serializable
 
 data class Course(

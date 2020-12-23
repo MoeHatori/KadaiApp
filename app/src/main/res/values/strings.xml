@@ -18,4 +18,11 @@
     <string name="arrival_title">到着</string>
     <string name="search_title">検索</string>
 
+    <!-- 検索条件 -->
+    <string name="now_searchType">現在時刻</string>
+    <string name="departure_searchType">出発</string>
+    <string name="arrival_searchType">到着</string>
+    <string name="first_searchType">始発</string>
+    <string name="last_searchType">終電</string>
+
 </resources>

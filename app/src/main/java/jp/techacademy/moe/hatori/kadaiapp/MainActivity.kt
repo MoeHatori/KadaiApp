@@ -44,6 +44,7 @@ class MainActivity : AppCompatActivity(),FragmentCallback {
         titleTextView.text = search_departure +" 　→　　" + search_arrival
         dateTextView.text = search_date.substring(0,4)+"年"+search_date.substring(4,6)+"月"+search_date.substring(6,8)+"日    "+search_time.substring(0,2)+"時"+search_time.substring(2,4)+"分"
 
+
         //ApiFragmentへの値の受け渡し
         val bundle = Bundle()
         bundle.putString("DEPARTURE",search_departure.toString())

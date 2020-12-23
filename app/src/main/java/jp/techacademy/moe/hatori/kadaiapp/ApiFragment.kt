@@ -35,7 +35,8 @@ class ApiFragment : Fragment() {
     var api_date: String = ""
     var api_type: String = ""
 
-    var url:String = ""
+    var url: String = ""
+    var url_test = StringBuilder()
 
 
     override fun onCreateView(
@@ -57,17 +58,41 @@ class ApiFragment : Fragment() {
         api_date = arguments?.getString("DATE").toString()
         api_type = arguments?.getString("TYPE").toString()
 
-        Log.d("Log_Api", "/"+api_date+"/"+api_time+"/"+api_type)
-
-
-        url = StringBuilder()
-            .append(getString(R.string.base_url))
+        url_test = url_test.append(getString(R.string.base_url))
             .append("?APIKEY=").append(getString(R.string.api_key))
             .append("&viaList=").append(api_departure).append(":").append(api_arrival)
-            .append("&time=").append(api_time)
-            .append("&date=").append(api_date)
-            .toString()
-        Log.d("Log_URL",url)
+
+        Log.d("Log_Api", "/" + api_date + "/" + api_time + "/" + api_type)
+
+        if ( api_type == getString(R.string.departure_searchType)){
+
+            url_test = url_test
+                       .append("&time=").append(api_time)
+                       .append("&date=").append(api_date)
+
+        }else if ( api_type == getString(R.string.arrival_searchType)){
+
+            url_test = url_test
+                       .append("&time=").append(api_time)
+                       .append("&date=").append(api_date)
+                       .append("&searchType=").append("arrival")
+
+        }else if ( api_type == getString(R.string.first_searchType)){
+
+            url_test = url_test
+                .append("&date=").append(api_date)
+                .append("&searchType=").append("firstTrain")
+
+        }else if ( api_type == getString(R.string.last_searchType)){
+
+            url_test = url_test
+                .append("&date=").append(api_date)
+                .append("&searchType=").append("lastTrain")
+        }
+
+        url = url_test.toString()
+        Log.d("Log_URL", url)
+
 
         recyclerView.apply {
             adapter = apiAdapter
@@ -81,11 +106,6 @@ class ApiFragment : Fragment() {
 
     private fun updateData() {
 
-//        val url = StringBuilder()
-//            .append(getString(R.string.base_url))
-//            .append("?APIKEY=").append(getString(R.string.api_key)) // Apiを使うためのAPIKEY
-//            .append("&viaList=").append(api_departure).append(":").append(api_arrival)
-//            .toString()
         val client = OkHttpClient.Builder()
             .addInterceptor(HttpLoggingInterceptor().apply {
                 level = HttpLoggingInterceptor.Level.BODY
@@ -94,7 +114,10 @@ class ApiFragment : Fragment() {
         val request = Request.Builder()
             .url(url)
             .build()
+
+        //Api通信を行う本体
         client.newCall(request).enqueue(object : Callback {
+
             override fun onFailure(call: Call, e: IOException) { // Error時の処理
                 e.printStackTrace()
                 handler.post {
@@ -107,7 +130,7 @@ class ApiFragment : Fragment() {
                 response.body?.string()?.also {
 
                     val gsonBuilder = GsonBuilder()
-                    val type: Type = object: TypeToken<MutableList<Line>>() {}.type
+                    val type: Type = object : TypeToken<MutableList<Line>>() {}.type
                     gsonBuilder.registerTypeAdapter(
                         type,
                         LineTypeAdapter()
@@ -118,8 +141,9 @@ class ApiFragment : Fragment() {
                         it,
                         ApiResponse::class.java
                     )
-                    list = apiResponse.resultSet.course
-
+                    apiResponse.resultSet.course?.let { course ->
+                        list = course
+                    }
 
                 }
                 handler.post {
@@ -143,32 +167,37 @@ class ApiFragment : Fragment() {
     }
 }
 
-class LineTypeAdapter : JsonDeserializer<List<Line>> { @Throws(JsonParseException::class)
+class LineTypeAdapter : JsonDeserializer<List<Line>> {
+    @Throws(JsonParseException::class)
 
- override fun deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): List<Line> {
+    override fun deserialize(
+        json: JsonElement,
+        typeOfT: Type,
+        context: JsonDeserializationContext
+    ): List<Line> {
 
-    val list: MutableList<Line> = ArrayList()
+        val list: MutableList<Line> = ArrayList()
 
-    // JSONが配列の場合の処理
-    if (json.isJsonArray) {
-        for (e in json.asJsonArray) {
+        // JSONが配列の場合の処理
+        if (json.isJsonArray) {
+            for (e in json.asJsonArray) {
+                list.add(
+                    context.deserialize<Any>(
+                        e,
+                        Line::class.java
+                    ) as Line
+                )
+            }
+        } else if (json.isJsonObject) {
             list.add(
                 context.deserialize<Any>(
-                    e,
+                    json,
                     Line::class.java
                 ) as Line
             )
         }
-    } else if (json.isJsonObject) {
-        list.add(
-            context.deserialize<Any>(
-                json,
-                Line::class.java
-            ) as Line
-        )
+        return list
     }
-    return list
- }
 }
 
 
