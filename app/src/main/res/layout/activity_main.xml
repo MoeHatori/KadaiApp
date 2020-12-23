@@ -23,6 +23,15 @@
         android:gravity="center_horizontal"
         app:layout_constraintTop_toBottomOf="@id/titleTextView" />
 
+    <TextView
+        android:id="@+id/searcherrorTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="14dp"
+        android:textColor="@android:color/holo_red_light"
+        android:gravity="center_horizontal"
+        app:layout_constraintTop_toBottomOf="@id/dateTextView" />
+
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
         android:layout_width="0dp"

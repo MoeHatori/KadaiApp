@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.*
 import com.google.gson.JsonParseException
 import com.google.gson.reflect.TypeToken
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_api.*
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
@@ -126,6 +127,7 @@ class ApiFragment : Fragment() {
             }
 
             override fun onResponse(call: Call, response: Response) { // 成功時の処理
+
                 var list = listOf<Course>()
                 response.body?.string()?.also {
 
@@ -136,11 +138,8 @@ class ApiFragment : Fragment() {
                         LineTypeAdapter()
                     )
 
+                    val apiResponse = gsonBuilder.create().fromJson(it, ApiResponse::class.java)
 
-                    val apiResponse = gsonBuilder.create().fromJson(
-                        it,
-                        ApiResponse::class.java
-                    )
                     apiResponse.resultSet.course?.let { course ->
                         list = course
                     }
@@ -149,7 +148,7 @@ class ApiFragment : Fragment() {
                 handler.post {
                     updateRecyclerView(list)
 
-                    callback?.onApiResponse(list)
+                    //callback?.onApiResponse(list)
                 }
             }
         })
@@ -157,6 +156,9 @@ class ApiFragment : Fragment() {
 
 
     private fun updateRecyclerView(list: List<Course>) {
+        if (list.size == 0){
+            callback?.onApiResponse()
+        }
         apiAdapter.refresh(list)
         swipeRefreshLayout.isRefreshing = false // SwipeRefreshLayoutのくるくるを消す
     }

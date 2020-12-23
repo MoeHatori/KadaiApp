@@ -42,7 +42,15 @@ class MainActivity : AppCompatActivity(),FragmentCallback {
 
         //検索ページで検索された駅名を表示
         titleTextView.text = search_departure +" 　→　　" + search_arrival
-        dateTextView.text = search_date.substring(0,4)+"年"+search_date.substring(4,6)+"月"+search_date.substring(6,8)+"日    "+search_time.substring(0,2)+"時"+search_time.substring(2,4)+"分"
+
+        if (search_type == getString(R.string.last_searchType) || search_type == getString(R.string.first_searchType)){
+
+            dateTextView.text = search_date.substring(0,4)+"年"+search_date.substring(4,6)+"月"+search_date.substring(6,8)+"日    "+search_type
+
+        }else{
+
+            dateTextView.text = search_date.substring(0,4)+"年"+search_date.substring(4,6)+"月"+search_date.substring(6,8)+"日    "+search_time.substring(0,2)+"時"+search_time.substring(2,4)+"分    "+search_type
+        }
 
 
         //ApiFragmentへの値の受け渡し
@@ -59,8 +67,9 @@ class MainActivity : AppCompatActivity(),FragmentCallback {
 
     }
 
-    override fun onApiResponse(course: List<Course>) {
+    override fun onApiResponse() {
 
+        searcherrorTextView.text = getString(R.string.error_title)
         //★ApiFragmentから値を持ってきて処理できるようにしようと思ったけどやめた
 
     }

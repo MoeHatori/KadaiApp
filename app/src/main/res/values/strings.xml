@@ -25,4 +25,7 @@
     <string name="first_searchType">始発</string>
     <string name="last_searchType">終電</string>
 
+    <!-- 検索エラー -->
+    <string name="error_title">駅名が見つかりません</string>
+
 </resources>

@@ -47,7 +47,7 @@ class ApiAdapter(private val context: Context): RecyclerView.Adapter<RecyclerVie
         val timeTextView: TextView = view.findViewById(R.id.timeTextView)
         val priceTextView: TextView = view.findViewById(R.id.priceTextView)
         val routeTextView: TextView = view.findViewById(R.id.routeTextView)
-        val otherTextView: TextView = view.findViewById(R.id.otherTextView)
+        //val otherTextView: TextView = view.findViewById(R.id.otherTextView)
 
     }
 
@@ -71,7 +71,7 @@ class ApiAdapter(private val context: Context): RecyclerView.Adapter<RecyclerVie
             rootView.apply {
                 // 偶数番目と奇数番目で背景色を変更させる
                 setBackgroundColor(ContextCompat.getColor(context,
-                    if (position % 2 == 0) android.R.color.white else android.R.color.darker_gray))
+                    if (position % 2 == 0) android.R.color.white else R.color.pink))
             }
 
             var result_number = position + 1
@@ -93,7 +93,7 @@ class ApiAdapter(private val context: Context): RecyclerView.Adapter<RecyclerVie
             }
 
             routeTextView.text = "発 →" + result_route + " 着"
-            otherTextView.text = "COMING SOON..."
+            //otherTextView.text = "COMING SOON..."
         }
     }
 }
