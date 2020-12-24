@@ -1,6 +1,7 @@
 package jp.techacademy.moe.hatori.kadaiapp
 
 
+
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +17,7 @@ class MapFragment :Fragment(),OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
     private lateinit var mMapView: MapView
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,32 +40,24 @@ class MapFragment :Fragment(),OnMapReadyCallback {
 //        val mapFragment = findFragmentById(R.id.map) as SupportMapFragment
 //        mapFragment.getMapAsync(this)
 
-//        mMapView = view.apply {
+
+
+        mMapView = view.findViewById(R.id.map) as MapView
+        mMapView.onCreate(savedInstanceState)
+        mMapView.onResume()
+        mMapView.getMapAsync(this)
+
+
+//        mMapView = map.apply {
 //            onCreate(savedInstanceState)
-//            getMapAsync(this)
-//        } as MapView
-
-//
-//        mMapView = view.findViewById(R.id.map) as MapView
-//        mMapView.onCreate(savedInstanceState)
-//        mMapView.onResume()
-//        mMapView.getMapAsync(this)
-
-
-        mMapView = map.apply {
-            onCreate(savedInstanceState)
-            getMapAsync(this@MapFragment)
-        }
+//            getMapAsync(this@MapFragment)
+//        }
 
     }
 
-    override fun onStart() {
-        super.onStart()
-        mMapView.onStart()
-    }
 
     override fun onMapReady(googleMap: GoogleMap) {
-        mMap = googleMap
+        this.mMap = googleMap
 
         // Add a marker in Sydney and move the camera
         val sydney = LatLng(-34.0, 151.0)
