@@ -8,7 +8,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(),FragmentCallback {
 
-    val fragments = listOf(ApiFragment(), FavoriteFragment())
+    val fragments = listOf(ApiFragment(), MapFragment())
     private val viewPagerAdapter by lazy { ViewPagerAdapter(this,fragments) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,9 +67,9 @@ class MainActivity : AppCompatActivity(),FragmentCallback {
 
     }
 
-    override fun onApiResponse() {
+    override fun onApiResponse(string: String) {
 
-        searcherrorTextView.text = getString(R.string.error_title)
+        searcherrorTextView.text = string
         //★ApiFragmentから値を持ってきて処理できるようにしようと思ったけどやめた
 
     }

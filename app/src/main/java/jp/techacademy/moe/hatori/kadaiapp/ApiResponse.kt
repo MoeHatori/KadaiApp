@@ -10,8 +10,16 @@ data class ApiResponse(
 
 data class ResultSet(
     @SerializedName("Course")
-    val course: List<Course>?
+    val course: List<Course>?,
+    @SerializedName("Error")
+    val error: Error?
+    //error
 ): Serializable
+
+data class Error(
+    @SerializedName("Message")
+    val message: String
+):Serializable
 
 data class Course(
     @SerializedName("Price")

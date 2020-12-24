@@ -7,9 +7,8 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 class ViewPagerAdapter(private val fragmentActivity: FragmentActivity,private val fragments: List<Fragment>) :
     FragmentStateAdapter(fragmentActivity) {
 
-    val titleIds = listOf(R.string.tab_title_api, R.string.tab_title_favorite)
+    val titleIds = listOf(R.string.tab_title_api, R.string.tab_title_map)
 
-    //val fragments : List<Fragment>
 
     override fun getItemCount(): Int {
         return fragments.size

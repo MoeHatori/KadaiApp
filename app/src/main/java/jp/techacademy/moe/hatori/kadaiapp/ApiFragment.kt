@@ -65,26 +65,26 @@ class ApiFragment : Fragment() {
 
         Log.d("Log_Api", "/" + api_date + "/" + api_time + "/" + api_type)
 
-        if ( api_type == getString(R.string.departure_searchType)){
+        if (api_type == getString(R.string.departure_searchType)) {
 
             url_test = url_test
-                       .append("&time=").append(api_time)
-                       .append("&date=").append(api_date)
+                .append("&time=").append(api_time)
+                .append("&date=").append(api_date)
 
-        }else if ( api_type == getString(R.string.arrival_searchType)){
+        } else if (api_type == getString(R.string.arrival_searchType)) {
 
             url_test = url_test
-                       .append("&time=").append(api_time)
-                       .append("&date=").append(api_date)
-                       .append("&searchType=").append("arrival")
+                .append("&time=").append(api_time)
+                .append("&date=").append(api_date)
+                .append("&searchType=").append("arrival")
 
-        }else if ( api_type == getString(R.string.first_searchType)){
+        } else if (api_type == getString(R.string.first_searchType)) {
 
             url_test = url_test
                 .append("&date=").append(api_date)
                 .append("&searchType=").append("firstTrain")
 
-        }else if ( api_type == getString(R.string.last_searchType)){
+        } else if (api_type == getString(R.string.last_searchType)) {
 
             url_test = url_test
                 .append("&date=").append(api_date)
@@ -144,11 +144,17 @@ class ApiFragment : Fragment() {
                         list = course
                     }
 
+                    apiResponse.resultSet.error?.let { error ->
+                        handler.post {
+                            callback?.onApiResponse(error.message)
+                        }
+                    }
+
+
                 }
                 handler.post {
                     updateRecyclerView(list)
 
-                    //callback?.onApiResponse(list)
                 }
             }
         })
@@ -156,9 +162,7 @@ class ApiFragment : Fragment() {
 
 
     private fun updateRecyclerView(list: List<Course>) {
-        if (list.size == 0){
-            callback?.onApiResponse()
-        }
+
         apiAdapter.refresh(list)
         swipeRefreshLayout.isRefreshing = false // SwipeRefreshLayoutのくるくるを消す
     }
